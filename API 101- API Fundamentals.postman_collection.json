@@ -1,0 +1,1144 @@
+{
+	"info": {
+		"_postman_id": "001b5541-1dd0-4aa0-be67-1eae692da0bf",
+		"name": "API 101: API Fundamentals",
+		"description": "This collection is a companion to the Postman Classroom Program workshop **API 101: API Fundamentals**\n\nSee the [**lesson video**](https://www.loom.com/share/071bb48e3a844b05bdadb2c8c554a6d1).  \n([slides](https://docs.google.com/presentation/d/1zcoGPWgGmO2wdd97HSlKzDai6obkJaGbkSxblK3XeZE/edit?usp=sharing))\n\n## What you will learn\n\n*   What are APIs?\n*   Servers & Clients\n*   Making HTTP requests to an API\n*   Understanding API responses\n*   Submitting data to APIs\n*   Using query parameters to refine requests\n    \n\n## Resources\n\n*   [Library API (code)](https://glitch.com/edit/#!/postman-library-api)\n*   [Sending Requests in Postman](https://learning.postman.com/docs/sending-requests/requests/)\n*   [Receiving Responses](https://learning.postman.com/docs/sending-requests/responses/)\n*   [Troubleshooting Requests](https://learning.postman.com/docs/sending-requests/troubleshooting-api-requests/)\n    \n\n## Getting Started\n\n1.  Fork this collection to your own workspace\n2.  Complete the mission in `your turn!`\n    \n\n## Submitting your work\n\nOnce you've finished mission in `your turn!` mission, follow the instructions on the `submit` folder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13776808"
+	},
+	"item": [
+		{
+			"name": "Library API Reference",
+			"item": [
+				{
+					"name": "books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "borges",
+									"description": "a search string to be matched against author/title (example: borges). Case insensitive, partial match OK.",
+									"disabled": true
+								},
+								{
+									"key": "checkedOut",
+									"value": "false",
+									"description": "true/false",
+									"disabled": true
+								},
+								{
+									"key": "genre",
+									"value": "fiction",
+									"description": "filter by genre (case-insensitive, exact match)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "### Get books\n\nReturns all books in the library database. \n\nOptional filters can be passed as query parameters (see below)"
+					},
+					"response": []
+				},
+				{
+					"name": "book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ZUST9JFx-Sd9X0k"
+								}
+							]
+						},
+						"description": "### Get a single book by id\n\nReplace the last part of path with the `id` of the book you would like to fetch. \n\n`/books/:id`"
+					},
+					"response": []
+				},
+				{
+					"name": "add book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"One Hundred Years of Solitude\",\n    \"author\": \"Gabriel García Márquez\",\n    \"genre\": \"fiction\",\n    \"yearPublished\": 1967\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							]
+						},
+						"description": "### Add a book"
+					},
+					"response": []
+				},
+				{
+					"name": "update book",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"checkedOut\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ZUST9JFx-Sd9X0k"
+								}
+							]
+						},
+						"description": "### Update a book by id\n\nUpdate any of these fields for a book with given `id` via the JSON body: \n\n- `title` (string)\n- `author` (string)\n- `genre` (string)\n- `yearPublished` (integer)\n- `checkedOut` (boolean)\n\n> Note: **Only user-added books can be edited**. Some books are part of the library's canonical collection and cannot be edited."
+					},
+					"response": []
+				},
+				{
+					"name": "delete book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "Fz7J0x_ZsWush1O"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Base URL: \n\n`https://postman-library-api.glitch.me`"
+		},
+		{
+			"name": "demo (complete)",
+			"item": [
+				{
+					"name": "view inventory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add a book to the library",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"The Pragmatic Programmer: From Journeyman to Master\",\n    \"author\": \"Andy Hunt, Dave Thomas\",\n    \"genre\": \"computers\",\n    \"yearPublished\": 1999\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search books",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books?search=pragmatic",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "pragmatic"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkout a book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"checkedOut\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get details for a single book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete the new book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "SZUR4a9lb6nw3Bw"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This demo will be done by your instructor in lecture. \n\n### Mission\n\nYou've just accepted a job as librarian at a library that uses an API to manage its books. You are at a training learning how to use the Library API.\n\n> There are multiple librarians at this library using the same API - don't be surprised if you see new books appearing!"
+		},
+		{
+			"name": "your turn!",
+			"item": [
+				{
+					"name": "day at work",
+					"item": [
+						{
+							"name": "1. \"What can I check out?\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Correct method is used in request\", function () {",
+											"    const cond = pm.request.method === \"GET\";",
+											"    pm.expect(cond).to.eql(true);",
+											"});",
+											"",
+											"pm.test(\"Correct path is used in request\", function () {",
+											"    pm.expect(pm.request.url.path[0]).to.match(/^books$/);",
+											"});",
+											"",
+											"const body = pm.response.json()",
+											"",
+											"pm.test(\"Response is an array\", function () {",
+											"    const cond = Array.isArray(body)",
+											"    pm.expect(cond).to.eql(true);",
+											"});",
+											"",
+											"pm.test(\"Only books that are not currently checked out are returned\", function () {",
+											"    const cond = body.every(book => !book.checkedOut)",
+											"    pm.expect(cond).to.eql(true);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/books?checkedOut=false",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "checkedOut",
+											"value": "false"
+										}
+									]
+								},
+								"description": "### Scenario\n\nExpand the dialog:\n\n```\nYou:    \"Hi! How can I help you?\"\n\nRachel: \"I'm looking for a new book - any book. What books are available to borrow?\"\n\n```\n\n### Task \n\nUse the Library API to **get all the books that are available to borrow (not checked out)**. \n\nBe sure to save your request!"
+							},
+							"response": []
+						},
+						{
+							"name": "2. \"I'm teaching myself software design\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const testsToPass = 6",
+											"let passed = 0",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    passed++;",
+											"});",
+											"",
+											"pm.test(\"Correct method is used in request\", function () {",
+											"    const cond = pm.request.method === \"GET\";",
+											"    pm.expect(cond).to.eql(true);",
+											"    passed++;",
+											"});",
+											"",
+											"pm.test(\"Correct path is used in request\", function () {",
+											"    pm.expect(pm.request.url.path[0]).to.match(/^books$/);",
+											"    passed++;",
+											"});",
+											"",
+											"pm.test(\"No query parameters except 'genre' are filtered\", function () {",
+											"    pm.expect(pm.request.url.query.all()).to.have.lengthOf(1)",
+											"    pm.expect(pm.request.url.query.all()[0].key).to.match(/^genre$/)",
+											"    passed++;",
+											"});",
+											"",
+											"const body = pm.response.json()",
+											"",
+											"pm.test(\"Response is an array\", function () {",
+											"    const cond = Array.isArray(body)",
+											"    pm.expect(cond).to.eql(true);",
+											"    passed++;",
+											"});",
+											"",
+											"pm.test(\"Only books from the 'computers' genre are returned\", function () {",
+											"    const cond = body.every(book => book.genre === \"computers\")",
+											"    pm.expect(cond).to.eql(true);",
+											"     passed++;",
+											"});",
+											"",
+											"if(testsToPass === passed) {",
+											"    const booksAreAvailable = !!body.map(b => !b.checkedOut).length",
+											"    if(body.length === 0) {",
+											"        console.log(\"You: 'Looks like we don't have any computer books at the moment!'\");",
+											"    } else if(booksAreAvailable) {",
+											"        console.log(\"You: 'Looks like we have some books available that might interest you! I'll take you to the computers section so you can browse'\");",
+											"    } else {",
+											"      console.log(\"You: 'We have some books but unfortunately they are all checked out right now. Come back next week!'\");",
+											"    }",
+											"}",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/books?genre=computers",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "genre",
+											"value": "computers"
+										}
+									]
+								},
+								"description": "### Scenario\n\nExpand the dialog:\n\n```\nYou:    \"Hello! How can I help you?\"\n\nYusuf: \"I want to build up my software design skills. Do you have any books related to software architecture in the computers section?\"\n\n```\n\n### Task \n\nUse the Library API to **get all the books in the `computers` genre**, regardless of `checkedOut` status. \n\nMake sure all the tests pass. Once they do, inspect the response from the API and imagine how you might respond to Yusuf. \n\nCheck the [Postman Console](https://learning.postman.com/docs/sending-requests/troubleshooting-api-requests/#using-the-console) in the lower left for a suggested reply to Yusuf. \n\nThe Postman Console is a useful tool for debugging requests when you get errors, or you want to view logged data from your test scripts. \n\n\nBe sure to save your request!"
+							},
+							"response": []
+						},
+						{
+							"name": "3. \"I'd like to donate a book\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"Correct method is used in request\", function () {",
+											"    const cond = pm.request.method === \"POST\";",
+											"    pm.expect(cond).to.eql(true);",
+											"});",
+											"",
+											"pm.test(\"Correct path is used in request\", function () {",
+											"    pm.expect(pm.request.url.path[0]).to.match(/^books$/);",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Nineteen Eighty-Four\",\n    \"author\": \"George Orwell\",\n    \"genre\": \"fiction\",\n    \"yearPublished\": 1949\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/books",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books"
+									]
+								},
+								"description": "### Scenario\n\nExpand the dialog:\n\n```\nSam:    \"Hi! I'd like to donate this book to the library\"\n\nYou: \"Thank you! One moment while I add it to our system...\"\n\n```\n\n### Task \n\nUse the Library API to **add Sam's book to the library's database**. As for the book details, use a book you love or have recently read! \n\nBe sure to save your request!"
+							},
+							"response": []
+						},
+						{
+							"name": "4. \"I'll read it!\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Correct method is used in request\", function () {",
+											"    const cond = pm.request.method === \"PATCH\";",
+											"    pm.expect(cond).to.eql(true);",
+											"});",
+											"",
+											"pm.test(\"Correct path is used in request\", function () {",
+											"    pm.expect(pm.request.url.path[0]).to.match(/^books$/);",
+											"});",
+											"",
+											"pm.test(\"Collection variable `newBookId` is set\", function () {",
+											"    pm.expect(pm.collectionVariables.get(\"newBookId\")).to.exist",
+											"});",
+											"",
+											"pm.test(\"Updates a book's checkedOut status to 'true'\", function () {",
+											"    const reqBody = JSON.parse(pm.request.body.raw)",
+											"    const cond = reqBody.checkedOut === true",
+											"    pm.expect(cond).to.eql(true);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"checkedOut\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/books/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{newBookId}}"
+										}
+									]
+								},
+								"description": "### Scenario\n\nExpand the dialog:\n\n```\n\n(Mariya is behind Sam in line. She notices the book he just donated)\n\nMariya:  \"Ooo, that looks like a good read! Can I please check it out?\"\n\nYou:     \"Sure thing! Let me update the system...\"\n\n```\n\n\n### Task \n\nUse the Library API to make a request that will **check out the book you added in the previous request**. \n\n> Hint: You will need to figure out a way to find the `id` of the book you've just added. Take a look at the `Library API Reference` - how can you find the new book's `id`?\n\nInstead of hard-coding the `id` in the request URL, **set the id as a [collection variable](https://learning.postman.com/docs/sending-requests/variables/#defining-collection-variables) called `newBookId`**. This way you can reuse the same id in other requests like this: \\{\\{newBookId\\}\\}\n\nTo use your variable `newBookId` as a [path parameter](https://learning.postman.com/docs/sending-requests/requests/#sending-parameters) in the request URL, include `:newBookId` (with a colon in front) in your request URL. Then in the **Params** tab of the request you can specify the Value of the path parameter as your variable \\{\\{newBookId\\}\\} (with double curly braces)\n\nBe sure to save your variables and your request!"
+							},
+							"response": []
+						},
+						{
+							"name": "5. Check book status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Correct method is used in request\", function () {",
+											"    const cond = pm.request.method === \"GET\";",
+											"    pm.expect(cond).to.eql(true);",
+											"});",
+											"",
+											"pm.test(\"Correct path is used in request\", function () {",
+											"    pm.expect(pm.request.url.path[0]).to.match(/^books$/);",
+											"});",
+											"",
+											"pm.test(\"Collection variable `newBookId` is set\", function () {",
+											"    pm.expect(pm.collectionVariables.get(\"newBookId\")).to.exist",
+											"});",
+											"",
+											"pm.test(\"Response returns a book with status checkedOut: true\", function () {",
+											"    const body = pm.response.json()",
+											"    const cond = body.checkedOut === true",
+											"    pm.expect(cond).to.eql(true);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/books/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{newBookId}}"
+										}
+									]
+								},
+								"description": "### Task \n\nConfirm that the book in the previous request was checked out successfully by making a request to **get details for that specific book**. \n\nRemember to use your collection variable \\{\\{newBookId\\}\\} as the value for the [path parameter](https://learning.postman.com/docs/sending-requests/requests/#sending-parameters)  `:newBookId` in your request URL!\n\nBe sure to save your request!\n\n### Next steps \n\nFollow the instructions in the `submit` request to submit your work to your instructor."
+							},
+							"response": []
+						},
+						{
+							"name": "6. \"I lost the book...\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Correct method is used in request\", function () {",
+											"    const cond = pm.request.method === \"DELETE\";",
+											"    pm.expect(cond).to.eql(true);",
+											"});",
+											"",
+											"pm.test(\"Collection variable `newBookId` is set\", function () {",
+											"    pm.expect(pm.collectionVariables.get(\"newBookId\")).to.exist",
+											"});",
+											"",
+											"pm.test(\"Correct path is used in request\", function () {",
+											"    pm.expect(pm.request.url.path[0]).to.match(/^books$/);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/books/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{newBookId}}"
+										}
+									]
+								},
+								"description": "### Scenario\n\nExpand the dialog:\n\n```\n\n(Mariya returns a couple hours later)\n\nMariya:  \"...I was reading that book in the park when a crow stole it right out of my hands and flew off! Sorry, but the book is lost now.\"\n\nYou:     \"Accidents happen. I'll just remove the book from our system.\"\n\n```\n\n### Task \n\nUse the Library API to make a request that will **delete the book that Mariya checked out earlier**. \n\nRemember to use your collection variable \\{\\{newBookId\\}\\} as the value for the [path parameter](https://learning.postman.com/docs/sending-requests/requests/#sending-parameters)  `:newBookId` in your request URL!\n\nBe sure to save your request!"
+							},
+							"response": []
+						}
+					],
+					"description": "Go through each task in order to complete a day at work as a librarian!\n\nFor each task, check the `Test Results` tab in the response and make sure all the tests are passing before moving on to the next task! Use the tests in the `Tests` tab of the request as hints if you get stuck.\n\n![image](https://user-images.githubusercontent.com/9841162/120246660-bcad8900-c225-11eb-8708-f6ba5282a698.png)\n\n### Next step\nClick the request \"1. What can I checkout?\" below and check the request documentation. You can view the documentation from the small file icon on the far-right menu of a request."
+				},
+				{
+					"name": "submit",
+					"item": [
+						{
+							"name": "submit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// DO NOT EDIT THESE TESTS. They ensure you have completed the assignment and send data to your instructor.",
+											"",
+											"// counter for passed tests",
+											"let passed = 0",
+											"let totalToPass = 13",
+											"",
+											"pm.test(\"Status code 200 from Postman API\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    passed++",
+											"});",
+											"",
+											"pm.test(\"Request path is correct and includes a collectionId\", function () {",
+											"    const path = pm.request.url.path",
+											"    pm.expect(path[0]).to.equal(\"collections\");",
+											"    pm.expect(path[1]).to.have.lengthOf.at.least(1);",
+											"    passed++",
+											"});",
+											"",
+											"const postmanApiKey = pm.environment.get(\"postman-api-key\");",
+											"",
+											"pm.test(\"'postman-api-key' is set as an active environment variable\", function () {",
+											"    const cond = !!postmanApiKey",
+											"    pm.expect(cond).to.eql(true);",
+											"    passed++",
+											"});",
+											"",
+											"const body = pm.response.json()",
+											"",
+											"const yourTurnFolder = body.collection.item.filter(i => i.name === 'your turn!')[0]",
+											"const workFolder = yourTurnFolder.item[0]",
+											"",
+											"const workRequests = workFolder.item",
+											"",
+											"pm.test(\"'day at work' folder has at least 6 requests\", function () {",
+											"    pm.expect(workRequests).to.have.lengthOf.at.least(6);",
+											"    passed++",
+											"});",
+											"",
+											"pm.test(\"Collection variable `newBookId` is set\", function () {",
+											"    pm.expect(pm.collectionVariables.get(\"newBookId\")).to.exist;",
+											"    passed++",
+											"});",
+											"",
+											"// 1",
+											"const browseRequestObj = workRequests.find(req => req.name === '1. \"What can I check out?\"')",
+											"",
+											"pm.test(\"1. \\\"What can I check out?\\\" request has correct method and path\", function () {",
+											"    const request = browseRequestObj.request",
+											"    pm.expect(request.method).to.equal('GET')",
+											"    pm.expect(request.url.path[0]).to.equal('books')",
+											"    pm.expect(request.url.query).to.have.length(1)",
+											"    pm.expect(request.url.query[0].key).to.equal(\"checkedOut\")",
+											"    pm.expect(request.url.query[0].value).to.equal(\"false\")",
+											"    passed++",
+											"});",
+											"",
+											"// 2",
+											"const genreRequestObj = workRequests.find(req => req.name === '2. \"I\\'m teaching myself software design\"')",
+											"",
+											"pm.test(\"2. \\\"I'm teaching myself software design\\\" request has correct method and path\", function () {",
+											"    const request = genreRequestObj.request",
+											"    const queryKeys = request.url.query.map(q=>q.key)",
+											"    pm.expect(request.method).to.equal('GET')",
+											"    pm.expect(request.url.path[0]).to.equal('books')",
+											"    pm.expect(queryKeys).to.include(\"genre\")",
+											"    /** Make sure any other valid query params present are disabled */",
+											"    if(queryKeys.includes(\"checkedOut\")) {",
+											"        pm.expect(request.url.query.filter(q=> q.key ===\"checkedOut\")[0]).to.haveOwnProperty(\"disabled\")",
+											"    }",
+											"    if(queryKeys.includes(\"search\")) {",
+											"        pm.expect(request.url.query.filter(q=> q.key ===\"search\")[0]).to.haveOwnProperty(\"disabled\")",
+											"    }",
+											"    pm.expect(request.url.query.filter(q=> q.key ===\"genre\")[0].value).to.equal(\"computers\")",
+											"    passed++",
+											"});",
+											"",
+											"// 3",
+											"const donateRequestObj = workRequests.find(req => req.name === '3. \"I\\'d like to donate a book\"')",
+											"",
+											"pm.test(\"3. \\\"I'd like to donate a book\\\" request has correct method and path\", function () {",
+											"    const request = donateRequestObj.request",
+											"    pm.expect(request.method).to.equal('POST')",
+											"    pm.expect(request.url.path).to.have.length(1)",
+											"    pm.expect(request.url.path[0]).to.equal('books')",
+											"    passed++",
+											"});",
+											"",
+											"pm.test(\"3. \\\"I'd like to donate a book\\\" request body has required properties\", function () {",
+											"    const reqBody = JSON.parse(donateRequestObj.request.body.raw)",
+											"    pm.expect(reqBody).to.have.property(\"title\")",
+											"    pm.expect(reqBody).to.have.property(\"author\")",
+											"    pm.expect(reqBody).to.have.property(\"genre\")",
+											"    pm.expect(reqBody).to.have.property(\"yearPublished\")",
+											"    passed++",
+											"});",
+											"",
+											"// 4",
+											"const checkoutRequestObj = workRequests.find(req => req.name === '4. \"I\\'ll read it!\"')",
+											"",
+											"pm.test(\"4. \\\"I'll read it!\\\" request has correct method and path\", function () {",
+											"    const request = checkoutRequestObj.request",
+											"    pm.expect(request.method).to.equal('PATCH')",
+											"    pm.expect(request.url.path).to.have.length(2)",
+											"    pm.expect(request.url.path[0]).to.equal('books')",
+											"    pm.expect(request.url.path[1]).to.have.lengthOf.at.least(1)",
+											"    passed++",
+											"});",
+											"",
+											"pm.test(\"4. \\\"I'll read it!\\\" request body has required properties\", function () {",
+											"    const reqBody = JSON.parse(checkoutRequestObj.request.body.raw)",
+											"    pm.expect(reqBody.checkedOut).to.eql(true)",
+											"    passed++",
+											"});",
+											"",
+											"// 5",
+											"const statusRequestObj = workRequests.find(req => req.name === '5. Check book status')",
+											"",
+											"pm.test(\"5. 'Check book status' request has correct method and path\", function () {",
+											"    const request = statusRequestObj.request",
+											"    pm.expect(request.method).to.equal('GET')",
+											"    pm.expect(request.url.path).to.have.length(2)",
+											"    pm.expect(request.url.path[0]).to.equal('books')",
+											"    pm.expect(request.url.path[1]).to.have.lengthOf.at.least(1)",
+											"    passed++",
+											"});",
+											"",
+											"// 6",
+											"const deleteRequestObj = workRequests.find(req => req.name === '6. \"I lost the book...\"')",
+											"",
+											"pm.test(\"6. 'I lost the book...' request has correct method and path\", function () {",
+											"    const request = deleteRequestObj.request",
+											"    pm.expect(request.method).to.equal('DELETE')",
+											"    pm.expect(request.url.path).to.have.length(2)",
+											"    pm.expect(request.url.path[0]).to.equal('books')",
+											"    pm.expect(request.url.path[1]).to.have.lengthOf.at.least(1)",
+											"    passed++",
+											"});",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"",
+											"// set up visualizer template",
+											"const baseStyle = `",
+											"<style>",
+											"body {",
+											"    background-color: #FF6C38;",
+											"}",
+											".container {",
+											"    background-color: #FFF;",
+											"    border-radius: 8px;",
+											"    border: 2px solid #FF6C38;",
+											"    padding: 2rem;",
+											"    max-width: 675px;",
+											"    margin: 2rem auto;",
+											"}",
+											"",
+											".show-on-send {",
+											"    display: none;",
+											"}",
+											"</style>",
+											"`",
+											"",
+											"// requires var 'workshopCode'",
+											"const testsPassedTemplate = `",
+											"${baseStyle}",
+											"<div class=\"container\">",
+											"    <h3>All tests passed! 🚀</h3>",
+											"    <p>Congratulations! You've completed {{workshopCode}}. If you've registered for the classroom program, enter the <strong>same email you used in registration</strong> below to submit your progress to your teacher</p>",
+											"",
+											"    <form onsubmit=\"handleSubmit(event)\">",
+											"    <input type=\"email\" name=\"email\" placeholder=\"Enter your email\" required />",
+											"    <input type=\"submit\" id=\"submit-button\"/>",
+											"    </form>",
+											"",
+											"    <p class=\"show-on-send\"><em>Please hold. It may take up to a minute to submit your data</em></p>",
+											"</div>",
+											"",
+											"<script>",
+											"const submitUrl = \"https://classroom-program-student-work-submit-prod.glitch.me/submit/{{workshopCode}}\"",
+											"",
+											"const submitButton = document.getElementById('submit-button');",
+											"const showOnSend = document.querySelector('.show-on-send');",
+											"const container = document.querySelector('.container');",
+											"",
+											"// attempt to send student data to progress monitor",
+											"async function handleSubmit(e) {",
+											"    e.preventDefault();",
+											"    enableSendingUI();",
+											"",
+											"    const studentEmail = e.target.elements.email.value;",
+											"    const data = {",
+											"        studentEmail",
+											"    }",
+											"",
+											"    try {",
+											"        const opts = { ",
+											"           method: 'post',",
+											"           body: JSON.stringify(data),",
+											"           headers: {",
+											"            'Content-Type': 'application/json'",
+											"           }",
+											"        }",
+											"",
+											"        const res = await fetch(submitUrl, opts);",
+											"        if(res.ok) {",
+											"            displaySuccessMsg();",
+											"        } else {",
+											"            displayServerErrorMsg();",
+											"        }",
+											"    } catch(err) {",
+											"        console.error(err)",
+											"        displayServerErrorMsg();",
+											"    } finally {",
+											"        disableSendingUI();",
+											"    }",
+											"}; ",
+											"",
+											"function enableSendingUI() {",
+											"   submitButton.disabled = true;",
+											"   submitButton.value = \"Sending...\";",
+											"   showOnSend.style.display = \"block\";",
+											"}",
+											"",
+											"function disableSendingUI() {",
+											"   submitButton.disabled = false;",
+											"   submitButton.value = \"Submit\";",
+											"   showOnSend.style.display = \"none\";",
+											"}",
+											"",
+											"function displaySuccessMsg() {",
+											"    const template = \"<h3>Success! 🎉</h3><p>Your teacher will be able to see your progress. Please do not resubmit your progress again.</p><p>To remind yourself that you have submitted this module, add a collection variable to this collection called 'submitted' and set its value to 'true'</p>\"",
+											"    container.innerHTML = template",
+											"}",
+											"",
+											"function displayServerErrorMsg() {",
+											"    const template = \"<h3>Uh oh!</h3><p>Something went wrong when attempting to submit your progress. If the problem persists, contact <code>studentprogram@postman.com</code></p>\"",
+											"    container.innerHTML = template",
+											"}",
+											"</script>",
+											"`",
+											"",
+											"const testsFailedTemplate = `",
+											"${baseStyle}",
+											"<div class=\"container\">",
+											"    <h3>Not quite done 🚫</h3>",
+											"    <p>It looks like your work is still failing some tests. Check the <strong>Test Results</strong> tab for details on which tests are failing. Fix the errors and try submitting again!</p>",
+											"</div>",
+											"`",
+											"",
+											"if (passed === totalToPass) {",
+											"    console.log('All tests passed!')",
+											"    const workshopCode = 'API101'",
+											"    pm.visualizer.set(testsPassedTemplate, { workshopCode })",
+											"} else {",
+											"    pm.visualizer.set(testsFailedTemplate)",
+											"}",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Api-Key",
+										"value": "{{postman-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://api.getpostman.com/collections/{{collectionId}}",
+									"protocol": "https",
+									"host": [
+										"api",
+										"getpostman",
+										"com"
+									],
+									"path": [
+										"collections",
+										"{{collectionId}}"
+									]
+								},
+								"description": "To check and submit your work, follow these instructions\n\n[step-by-step video](https://www.loom.com/share/8b43484148ec49a5b5a8c2f0fcec646d)\n\n#### 1\\. **Save the collection ID as a collection variable**\n\nGet the collection ID for this collection by clicking on the collection folder (root folder), selecting the info icon `ⓘ` on the right and copying the ID.\n\nFrom the collection's \"Variables\" tab, replace the value with the ID you got from the previous step, then **Save** the change.\n\n#### 2\\. **Add your Postman API key to the environment**\n\n*You will only need to do this step the first time you submit*\n\nIf you do not have a Postman API Key, generate one [here](https://go.postman.co/settings/me/api-keys). We will store this value as an **Environment variable** - environments allow us to share variables across multiple collections. [Create an environment](https://learning.postman.com/docs/sending-requests/managing-environments/#creating-environments) from the Environments tab and call it `my-info`. Add your Postman API key to your new environment as a variable named `postman-api-key`.\n\n> ⚠ When saving sensitive environment variables, remember to only use the CURRENT VALUE column\n\nMake sure you save your changes! You can use this environment for any future Postman Classroom Program workshops you complete. The `postman-api-key` variable is used in the `X-Api-Key` header of each `submit` request.\n\n#### 3\\. **Set 'my-info' environment to active**\n\nEnsure you environment is active by selecting it in the upper right.\n\nClick the 'eye' icon to the right to confirm there is a value present in your environment for `postman-api-key`\n\n![](https://user-images.githubusercontent.com/9841162/124359041-35bb4a00-dbf1-11eb-8895-f9d7a0451c52.png)\n\n#### 4\\. **Check your work**\n\nSave your changes in the collection and environment. Hit **Send**.\n\n> If you get a `401 Unauthorized` response, carefully review steps 3 and 4 and make sure your Postman API key is correctly resolving.\n\nCheck the response. in the **Body** tab of the response, click **Visualize** to view your status.\n\nIf any of the tests failed, you will see a \"Not quite done\" message like below.\n\n![](https://user-images.githubusercontent.com/9841162/124359464-2a691e00-dbf3-11eb-9e90-7dd27db2bfd0.png)\n\nTo see which tests failed, open the **Test Results** tab of the response. Address the failed tests in your work and submit again.\n\n#### 5\\. **Submit your progress**\n\n*Only do this step if you are registered with the Postman Classroom Program!*\n\nIf all the tests pass, you will see a congratulations message.\n\n![](https://user-images.githubusercontent.com/9841162/124359555-8e8be200-dbf3-11eb-8b0f-0ab6a6e1b232.png)\n\nIf (and only if!) you have registered for the Postman Classroom Program, you will need to submit **the same email address you used to register for the program** in the form that appears. Enter your email and hit \"Submit\". This will allow your teacher to monitor your progress!\n\nOnce your progress is submitted successfully, you are done with this module! Feel free to run the tests again whenever you like by running `submit` - but please to not re-submit your email for this module.\n\n### Troubleshooting: common errors when submitting\n\n*   **Make sure there is a value for** `collectionId` in your collection variables.\n*   **Make sure that value is your collection ID, NOT your request ID.** You can find your collection ID by clicking on your collection (top level folder), then checking the info `ⓘ` tab in the far right menu\n*   **Make sure there is no accidental white space** when you define you `collectionId` variable. That includes spaces and new lines. You can see a small gray arrow at the end of your value if there is a newline - simply delete the newline or space\n    \n\n#### Going further\n\nLearning to read API documentation is a crucial skill when working with APIs. It is also important to get familiar with reading errors.\n\nPlay around with some requests and see if you can get the API to generate any errors\n\nWhat happens when you:\n\n*   pass unrecognized parameters?\n*   hit an unrecognized endpoint?\n*   try to make a PUT request on a field you don't have permission to edit?\n*   try to add a book with made-up fields in the body?\n*   try to delete the book named \"Ficciones\" by Jorge Luis Borges?\n    \n\nIf you are interested in seeing the code behind this API, you can view it [here](https://glitch.com/edit/#!/postman-library-api?path=server.js:18:0)."
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "## Your mission\n\nYou are a librarian at a library that uses an API to manage its books. Use the Library API to complete each of the asks from library patrons in the `day at work` folder.\n\n> There are multiple librarians at this library using the same API - don't be surprised if you see new books appearing!\n\n#### Before you start\n\nCheck out the request documentation in the `Library API Reference` folder to get familiar with the API and the types of requests you can make.\n\nThere are multiple ways to view documentation:\n\n*   Click the three dots next a folder in the file explorer, then \"View Documentation\". This will show all the documentation for the whole collection.\n*   Navigate to a request and click the small file icon in the far-right menu\n    \n\n### Next step\n\nClick the \"day at work\" folder below and check the documentation.\n\n## Need help?\n\nIf you get stuck, search the [Postman forums](https://community.postman.com/) or post a new topic in the [Training category](https://community.postman.com/c/training/38) if you don't see your question. Also, see these [general troubleshooting tips](https://community.postman.com/t/general-troubleshooting-tips/30667).\n\n## Join us on Discord!  \nJoin the Postman Student Community Discord server for fun events and getting Postman help from other students and Postman team members! [Join here](https://discord.gg/ndTKxHy2CF)"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://postman-library-api.glitch.me"
+		},
+		{
+			"key": "id",
+			"value": "ZUST9JFx-Sd9X0k"
+		},
+		{
+			"key": "collectionId",
+			"value": ""
+		},
+		{
+			"key": "newBookId",
+			"value": ""
+		},
+		{
+			"key": "submitted",
+			"value": "true",
+			"type": "string"
+		}
+	]
+}
