@@ -1,0 +1,443 @@
+{
+	"info": {
+		"_postman_id": "fd17a7a8-15c3-499f-bb91-7299652d3a0b",
+		"name": "Galaxy APIs 101",
+		"description": "___This collection accompanies the Postman Galaxy APIs 101 training session.___\n\nLearn API essentials by working your way through this collection!\n\n__FORK the collection to create a copy in your own workspace.__\n\n* Start by opening the `Learn APIs` folder, selecting the `Begin learning` request, and clicking **Send**.\n* When you get a response, open the **Visualize** tab and follow the instructions from there.\n\nWhen you're done working through the collection, open the `Check progress` folder and copy your collection link (**Share** &gt; **Get public link**) into the address to test your work for completion!\n\nWhen your submission is successfully processed you'll receive the [Postman APIs 101](https://badgr.com/public/badges/0WGPGyuYSwmXOhr-6v7D8Q) badge!",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13776808"
+	},
+	"item": [
+		{
+			"name": "Learn APIs",
+			"item": [
+				{
+					"name": "Begin learning",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{training_api}}/begin",
+							"host": [
+								"{{training_api}}"
+							],
+							"path": [
+								"begin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{training_api}}/customers",
+							"host": [
+								"{{training_api}}"
+							],
+							"path": [
+								"customers"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "individual",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{$randomFullName}}\",\n  \"address\": \"{{$randomStreetAddress}}\",\n  \"type\": \"individual\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{training_api}}/customer",
+							"host": [
+								"{{training_api}}"
+							],
+							"path": [
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update customer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"address\": \"{{$randomStreetAddress}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{training_api}}/customer?cust_id=4z3lCMGeP",
+							"host": [
+								"{{training_api}}"
+							],
+							"path": [
+								"customer"
+							],
+							"query": [
+								{
+									"key": "cust_id",
+									"value": "4z3lCMGeP"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove customer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{training_api}}/customer/:cust_id",
+							"host": [
+								"{{training_api}}"
+							],
+							"path": [
+								"customer",
+								":cust_id"
+							],
+							"variable": [
+								{
+									"key": "cust_id",
+									"value": "4z3lCMGeP"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var uID = pm.collectionVariables.get(\"userId\");",
+							"if(!uID){",
+							"    pm.collectionVariables.set(\"userId\", pm.variables.replaceIn('{{$guid}}'));",
+							"}",
+							"pm.request.headers.add( { key: 'user-id', value: pm.collectionVariables.get('userId') } );"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Check progress",
+			"item": [
+				{
+					"name": "Collection status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//auth details at collection level",
+									"let authObj = pm.response.json().auth;",
+									"//request array",
+									"let requestArr = pm.response.json().item[0].item;",
+									"",
+									"pm.test(\"If you have any fails below look back through the requests or ask for support. When all of your tests pass include your collection link here to get your badge: bit.ly/submit-apis-101\", () => {",
+									"    pm.expect(true);",
+									"});",
+									"",
+									"//used auth",
+									"pm.test(\"Authorized requests\", () => {",
+									"    pm.expect(authObj).to.be.an(\"object\");",
+									"    pm.expect(authObj).to.have.property(\"apikey\"); ",
+									"    console.log(authObj);",
+									"});",
+									"",
+									"//used all required methods",
+									"pm.test(\"Used GET, POST, PUT, DELETE methods\", () => {",
+									"    //first folder should have all methods in requests",
+									"    let methArr = requestArr.map(value => value.request.method); ",
+									"    console.log(methArr);",
+									"    pm.expect(methArr).to.include.members([\"GET\", \"POST\", \"PUT\", \"DELETE\"]);",
+									"});",
+									"",
+									"//used params - query and path",
+									"pm.test(\"Used query and path parameters\", () => {",
+									"    //first folder should have query",
+									"    let queryArr = requestArr.filter(value => value.request.url.query).map(value => value.request.url.query);",
+									"    console.log(queryArr);",
+									"    pm.expect(queryArr).to.have.length.of.above(0);",
+									"    //first folder should also have path",
+									"    let pathArr = requestArr.filter(value => value.request.url.path).map(value => value.request.url.path);",
+									"    var pathParams = pathArr.flat().filter(p => p.startsWith(':')); ",
+									"    console.log(pathParams);",
+									"    pm.expect(pathParams).to.have.length.of.above(0);",
+									"});",
+									"",
+									"//sent body",
+									"pm.test(\"Sent body data\", () => {",
+									"    //first folder should have a body",
+									"    let bodyArr = requestArr.filter(value => value.request.body).map(value => value.request.body); ",
+									"    console.log(bodyArr);",
+									"    pm.expect(bodyArr).to.have.length.of.above(0);",
+									"});",
+									"",
+									"//used vars (can currently only check env with run output - future enhancement)",
+									"pm.test(\"Used variables\", () => {",
+									"    //base path for main folder should use var",
+									"    //url is object when path or query param, string otherwise",
+									"    let addresses = requestArr.filter(value => value.request.url.raw ? value.request.url.raw : value.request.url).map(value => value.request.url.raw ? value.request.url.raw : value.request.url);",
+									"    var addressVars = addresses.filter(p => encodeURI(p).indexOf('%7B%7B')>-1); ",
+									"    console.log(addressVars);",
+									"    pm.expect(addressVars).to.have.length.of.above(0);",
+									"    //auth should also use var",
+									"    pm.expect(encodeURI(authObj.apikey.value).indexOf('%7B%7B')).to.be.above(-1);",
+									"",
+									"});",
+									"",
+									"//visualizer output",
+									"var template = `",
+									"<h3>Complete your collection</h3>",
+									"<p>",
+									"    Copy your completed collection link in as the request address (make sure your requests are saved), hit <strong>Send</strong> and open the Test Results.",
+									"</p>",
+									"<p>",
+									"If you have any fails, look back through the requests or ask for support in the session chat or conference help desk. When all of your tests pass, navigate to this form in your browser and include your collection link to get your badge: bit.ly/submit-apis-101",
+									"</p>",
+									"`;",
+									"pm.visualizer.set(template, {});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://www.getpostman.com/collections/fe4a56fd384fe3d15286",
+							"protocol": "https",
+							"host": [
+								"www",
+								"getpostman",
+								"com"
+							],
+							"path": [
+								"collections",
+								"fe4a56fd384fe3d15286"
+							]
+						},
+						"description": "Copy your completed collection link in as the request address (make sure your requests are saved), hit **Send** and open the **Test Results**.\n\nIf you have any fails, look back through the requests or ask for support in the session chat or conference help desk. When all of your tests pass, include your collection link here to get your badge: [bit.ly/submit-apis-101](bit.ly/submit-apis-101)"
+					},
+					"response": []
+				}
+			],
+			"description": "Enter your collection link as the request address:\n\n* Select the collection\n* Open __Share__\n* Choose __Get public link__\n* _Update the link if you changed your requests_\n* Copy the link and enter it in `Collection status`\n\n**Send** and check out the **Test Results**!"
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{email_key}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "csm_key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"var template = `",
+					"    <!--showdown for converting md to html-->",
+					"    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js\"></script>",
+					"    <script type=\"text/javascript\">",
+					"        function getContent(orig){",
+					"            var converter = new showdown.Converter(), text = orig, html = converter.makeHtml(text);",
+					"            return html;",
+					"        }",
+					"    </script>",
+					"    ",
+					"    <!--syntax highlighting-->",
+					"    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/default.min.css\">",
+					"    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js\"></script>",
+					"    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/googlecode.min.css\">",
+					"    ",
+					"    <!--generic styles-->",
+					"    <style type=\"text/css\">",
+					"    body { background-color: white; }",
+					"    #notes p, #next p {padding-left:20px; border-left:2px solid #7D728E; }",
+					"    #notes blockquote p, #next blockquote p { border-left: none; background-color: #FF6C3722; color: #FF6C37; padding: 10px; }",
+					"    #notes, #next {padding-right:20px;}",
+					"    img {max-width:600px; padding-left:20px; padding-bottom:20px;}",
+					"    h4 {color:#6D7F91;}",
+					"    #intro, #notes, #next {color:#2B3B41;}",
+					"    </style>",
+					"",
+					"    <h3 style=\"color: {{status}}\">{{response.tutorial.title}}</h3>",
+					"    ",
+					"    <div id=\"intro\"></div>",
+					"",
+					"    <div id=\"notes\"></div>",
+					"    ",
+					"    {{#if response.tutorial.next}}",
+					"    <h4>Next</h4>",
+					"    <div id=\"next\"></div>",
+					"    {{/if}}",
+					"    ",
+					"    <script type=\"text/javascript\">",
+					"        if(\"{{response.tutorial.rip}}\".length>0)",
+					"            document.write(getContent(\"{{response.tutorial.rip}}\"));",
+					"    </script>",
+					"    ",
+					"    <script type=\"text/javascript\">",
+					"        if(\"{{response.tutorial.pic}}\".length>0)",
+					"            document.write(\"<img src='{{response.tutorial.pic}}' alt='postman steps'/>\");",
+					"    </script>",
+					"",
+					"    <!--content to process before rendering-->",
+					"    <script type=\"text/javascript\">",
+					"        pm.getData(function(error, data) {",
+					"            var tut = data.response.tutorial;",
+					"            if(tut){",
+					"                if(tut.steps){",
+					"                    var i; ",
+					"                    var infoArray = tut.steps;",
+					"                    var notes=\"<div id='notes'>\";",
+					"                    for(i=0; i<infoArray.length; i++){",
+					"                        notes+=getContent(infoArray[i].note);",
+					"                        if(infoArray[i].raw_data){",
+					"                            notes+=\"<pre style='padding-left:20px'><code class='json'>\"+JSON.stringify(infoArray[i].raw_data, null, 2)+\"</code></pre>\";",
+					"                        }",
+					"                        if(infoArray[i].js_code){",
+					"                            var c;",
+					"                            notes+=\"<pre style='padding-left:20px'><code class='js'>\";",
+					"                            for(c=0; c<infoArray[i].js_code.length; c++)",
+					"                                notes+=infoArray[i].js_code[c]+\"<br/>\";",
+					"                            notes+=\"</code></pre>\";",
+					"                        }",
+					"                        if(infoArray[i].ref_data){",
+					"                            notes+=\"<pre style='padding-left:20px'><code class='json'>\"+JSON.stringify(data.response[infoArray[i].ref_data], null, 2)+\"</code></pre>\";",
+					"                        }",
+					"                        if(infoArray[i].pic)",
+					"                            notes+=\"<img src='\"+infoArray[i].pic+\"' alt='postman steps'/>\";",
+					"                    }",
+					"                    notes+=\"</div>\"",
+					"                    document.getElementById(\"notes\").innerHTML=notes;",
+					"                }",
+					"                document.getElementById(\"intro\").innerHTML=getContent(tut.intro);",
+					"                if(tut.next){",
+					"                    var nextDiv=document.getElementById(\"next\");",
+					"                    var n;",
+					"                    var nextContent=\"\";",
+					"                    var nextArray=tut.next;",
+					"                    for(n=0; n<nextArray.length; n++){",
+					"                        nextContent+=getContent(nextArray[n].step);",
+					"                        if(nextArray[n].raw_data){",
+					"                            nextContent+=\"<pre style='padding-left:20px'><code class='json'>\"+JSON.    stringify(nextArray[n].raw_data, null, 2)+\"</code></pre>\";",
+					"                        }",
+					"                        if(nextArray[n].js_code){",
+					"                            var c;",
+					"                            nextContent+=\"<pre style='padding-left:20px'><code class='js'>\";",
+					"                            for(c=0; c<nextArray[n].js_code.length; c++)",
+					"                                nextContent+=nextArray[n].js_code[c];",
+					"                            nextContent+=\"</code></pre>\";",
+					"                        }",
+					"                        if(nextArray[n].pic)",
+					"                            nextContent+=\"<img src='\"+nextArray[n].pic+\"' alt='postman steps'/>\";",
+					"                    }",
+					"                    nextDiv.innerHTML=getContent(nextContent);",
+					"                }",
+					"            }",
+					"            hljs.initHighlighting();",
+					"        });",
+					"    </script>",
+					"`;",
+					"if (pm.response.headers.get(\"Content-Type\").includes(\"json\")) {",
+					"  pm.visualizer.set(template, {",
+					"    response: pm.response.json(),",
+					"    status: (\"\" + pm.response.code).startsWith(\"4\") ? \"#cc0000\" : \"#FF6C37\"",
+					"  });",
+					"} else if (pm.response.headers.get(\"Content-Type\").includes(\"html\")) {",
+					"  pm.visualizer.set(`{{info}}`, {",
+					"    info:",
+					"      \"Hmm this seems to be HTML and not JSON - you might have hit an invalid endpoint - undo your changes, or close the request without saving and try opening / sending it again!\"",
+					"  });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "backup_api",
+			"value": "https://galaxy-apis-101.herokuapp.com"
+		},
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "training_apis",
+			"value": "galaxy-apis-101.glitch.me/begin"
+		},
+		{
+			"key": "training_api",
+			"value": "galaxy-apis-101.glitch.me"
+		},
+		{
+			"key": "email_key",
+			"value": "madushansandaru1@gmail.com",
+			"type": "string"
+		}
+	]
+}
